@@ -1,0 +1,30 @@
+{
+    "name": "@khel-mitra/db",
+    "version": "1.0.0",
+    "description": "",
+    "main": "dist/index.js",
+    "scripts": {
+        "build": "tsc -b",
+        "prisma:dev:deploy": "prisma migrate deploy",
+        "db:dev:up": "docker compose up khel-mitra-db -d",
+        "db:dev:down": "docker compose down khel-mitra-db",
+        "db:dev:stop": "docker compose stop khel-mitra-db",
+        "db:dev:rm": "docker compose rm khel-mitra-db -s -f -v",
+        "db:dev:restart": "pnpm db:dev:rm && pnpm db:dev:up && sleep 3 && pnpm prisma:dev:deploy"
+    },
+    "dependencies": {
+        "@prisma/client": "6.4.0",
+        "@repo/eslint-config": "workspace:*",
+        "@repo/typescript-config": "workspace:*"
+    },
+    "keywords": [],
+    "license": "ISC",
+    "devDependencies": {
+        "prisma": "^6.4.0",
+        "typescript": "^5.7.3"
+    },
+    "exports": {
+        ".": "./dist/index.js",
+        "./prisma": "./dist/index.js"
+    }
+}

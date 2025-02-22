@@ -1,0 +1,13 @@
+model RefreshToken {
+    token     String
+    userId    String   @unique
+    expiresAt DateTime
+
+    user User @relation(fields: [userId], references: [id])
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    @@id([token, userId])
+    @@map("refresh_tokens")
+}

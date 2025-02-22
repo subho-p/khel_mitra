@@ -1,0 +1,24 @@
+{
+    "name": "khel-mitra-app",
+    "private": true,
+    "scripts": {
+        "build": "turbo build",
+        "predev": "cd ./packages/db && pnpm db:dev:up",
+        "dev": "turbo dev",
+        "postdev": "cd ./packages/db && pnpm db:dev:stop",
+        "lint": "turbo lint",
+        "format": "prettier --write \"**/*.{ts,tsx,json,md}\"",
+        "check-types": "turbo check-types"
+    },
+    "devDependencies": {
+        "@repo/eslint-config": "workspace:*",
+        "@repo/typescript-config": "workspace:*",
+        "prettier": "^3.5.0",
+        "turbo": "^2.4.2",
+        "typescript": "5.7.3"
+    },
+    "packageManager": "pnpm@9.0.0",
+    "engines": {
+        "node": ">=18"
+    }
+}

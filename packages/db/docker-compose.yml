@@ -1,0 +1,14 @@
+services:
+  khel-mitra-db:
+    image: postgres
+    ports:
+      - 4444:5432
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: khelmitra123
+      POSTGRES_DB: khelmitra-db
+    networks:
+      - khel-mitra-net
+
+networks:
+  khel-mitra-net:

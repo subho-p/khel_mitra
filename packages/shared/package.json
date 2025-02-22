@@ -1,0 +1,29 @@
+{
+    "name": "@khel-mitra/shared",
+    "version": "1.0.0",
+    "description": "",
+    "main": "dist/index.js",
+    "scripts": {
+        "dev": "pnpm build --watch",
+        "build": "tsc -b -v"
+    },
+    "dependencies": {
+        "@repo/eslint-config": "workspace:*",
+        "@repo/typescript-config": "workspace:*",
+        "zod": "^3.24.2"
+    },
+    "exports": {
+        "./constanst": {
+            "import": "./dist/constants/index.js",
+            "require": "./dist/constants/index.js"
+        },
+        "./validator": {
+            "import": "./dist/validator/index.js",
+            "require": "./dist/validator/index.js"
+        },
+        "./types": {
+            "import": "./dist/types/index.js",
+            "require": "./dist/types/index.js"
+        }
+    }
+}
