@@ -20,13 +20,13 @@ import {
 import { AuthService } from './auth.service';
 import { Request, Response } from 'express';
 
-import { AuthGuard } from '@nestjs/passport';
 import { JwtAuthGuard } from 'src/libs/guards';
 import { PrismaService } from 'src/libs/db/db.service';
 import { GetUser, ZodValidation } from '../../libs/decorators';
 
 import jwt from 'jsonwebtoken';
 import * as argon from 'argon2';
+import { v4 as uuid4 } from 'uuid';
 import { User } from '@prisma/client';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
 import { REFRESH_TOKEN_NAMESPACE } from '@khel-mitra/shared/constanst';
@@ -45,8 +45,13 @@ export class AuthController {
         try {
             const { email, password } = data;
             const hashedPassword = await argon.hash(password);
+            const randomUsername = 'user' + uuid4().slice(0, 8);
             const user = await this.prisma.user.create({
-                data: { email: email.toLowerCase(), password: hashedPassword },
+                data: {
+                    email: email.toLowerCase(),
+                    username: randomUsername,
+                    password: hashedPassword,
+                },
             });
 
             const { accessToken } = await this.authService.setCookies(res, user);

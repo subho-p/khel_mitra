@@ -47,9 +47,9 @@ export class AuthService {
         }
     }
 
-    private signAccessToken(userId: string) {
+    private signAccessToken(user: User) {
         return this.jwtService.sign(
-            { sub: userId },
+            { sub: user.id, id: user.id, username: user.username },
             {
                 secret: this.configService.get<string>('JWT_ACCESS_SECRET'),
                 expiresIn: TOKEN_EXPIRATION.ACCESS,
@@ -67,14 +67,14 @@ export class AuthService {
         );
     }
 
-    generateTokens(userId: string) {
-        const accessToken = this.signAccessToken(userId);
-        const refreshToken = this.signRefreshToken(userId);
+    generateTokens(user: User) {
+        const accessToken = this.signAccessToken(user);
+        const refreshToken = this.signRefreshToken(user.id);
         return { accessToken, refreshToken };
     }
 
     async setCookies(res: Response, user: User) {
-        const tokens = this.generateTokens(user.id);
+        const tokens = this.generateTokens(user);
 
         await this.addRefreshToken(user.id, tokens.refreshToken);
 
