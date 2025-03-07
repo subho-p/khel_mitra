@@ -33,7 +33,7 @@ export default function GamesPage() {
                 <div className="w-full max-w-7xl">
                     <DisplayMap
                         className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
-                        data={Games}
+                        data={[...Games]}
                         renderItem={(game, index) => (
                             <motion.div
                                 initial={{ opacity: 0, y: 20 }}
