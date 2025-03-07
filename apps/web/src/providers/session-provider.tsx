@@ -2,14 +2,9 @@
 
 import React from "react";
 import { getMe } from "@/services/user.service";
-import { TUser } from "@khel-mitra/shared/types";
 import { refreshToken } from "@/services/auth.service";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-
-type Session = {
-    user?: TUser;
-    isAuthenticated: boolean;
-};
+import { Session } from "@/types";
 
 export const SessionContext = React.createContext<Session>({
     user: undefined,
@@ -49,7 +44,7 @@ export const SessionProvider: React.FC<{
         );
 
         return () => clearInterval(interval);
-    }, [userTokenRefresh]);
+    }, [userTokenRefresh, data]);
 
     return (
         <SessionContext.Provider

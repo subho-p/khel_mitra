@@ -2,10 +2,11 @@
     "name": "khel-mitra-app",
     "private": true,
     "scripts": {
-        "build": "turbo build",
-        "predev": "cd ./packages/db && pnpm db:dev:up",
         "dev": "turbo dev",
-        "postdev": "cd ./packages/db && pnpm db:dev:stop",
+        "build": "turbo build",
+        "predev:db": "cd ./packages/db && pnpm db:dev:up",
+        "dev:db": "turbo dev",
+        "postdev:db": "cd ./packages/db && pnpm db:dev:stop",
         "lint": "turbo lint",
         "format": "prettier --write \"**/*.{ts,tsx,json,md}\"",
         "check-types": "turbo check-types"

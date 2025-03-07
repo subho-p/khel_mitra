@@ -24,6 +24,18 @@
         "./types": {
             "import": "./dist/types/index.js",
             "require": "./dist/types/index.js"
+        },
+        "./**": {
+            "import": "./dist/index.js",
+            "require": "./dist/index.js"
+        },
+        "./namespace": {
+            "import": "./dist/namespace/index.js",
+            "require": "./dist/namespace/index.js"
+        },
+        "./namespace/socket": {
+            "import": "./dist/namespace/socket/index.js",
+            "require": "./dist/namespace/socket/index.js"
         }
     }
 }
