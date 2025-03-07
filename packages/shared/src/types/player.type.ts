@@ -1,4 +1,4 @@
-export type TUser = {
+export type TPlayer = {
     id: string;
     username: string;
     avatarUrl?: string;
