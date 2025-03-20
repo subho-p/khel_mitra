@@ -41,7 +41,6 @@ export const CheckersRow: React.FC<{
                             {cell.piece.isKing && (
                                 <span className="text-white text-2xl">&#9818;</span>
                             )}
-                            {cell.position}
                         </CheckersPiece>
                     )}
                 </CheckersCell>
