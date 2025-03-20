@@ -29,11 +29,14 @@ export async function middleware(request: NextRequest) {
         return NextResponse.redirect(new URL("/", origin));
     }
 
-    if (!isPublicRoute && !isAuthRoute && !isAuthenticated) {
+    if (
+        !isPublicRoute &&
+        !isAuthRoute &&
+        !isAuthenticated &&
+        process.env.NODE_ENV === "production"
+    ) {
         const callbackUrl = encodeURIComponent(pathname);
-        return NextResponse.redirect(
-            new URL(`/auth/signin?callback=${callbackUrl}`, origin),
-        );
+        return NextResponse.redirect(new URL(`/auth/signin?callback=${callbackUrl}`, origin));
     }
 
     return NextResponse.next();

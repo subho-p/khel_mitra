@@ -16,3 +16,12 @@ export const checkersSocketClient = io(`${process.env.NEXT_PUBLIC_SOCKET_URL}/ch
         [PLAYER_ACCESS_TOKEN_NAMESPACE]: getPlayerAccessToken(),
     },
 });
+
+export const ticTacToeSocketClient = io(`${process.env.NEXT_PUBLIC_SOCKET_URL}/tic-tac-toe`, {
+    withCredentials: true,
+    transports: ["websocket"],
+    autoConnect: false,
+    auth: {
+        [PLAYER_ACCESS_TOKEN_NAMESPACE]: getPlayerAccessToken(),
+    },
+});

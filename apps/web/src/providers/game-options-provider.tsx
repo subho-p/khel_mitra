@@ -1,11 +1,11 @@
 "use client";
 
-import React from "react";
+import React, { useCallback } from "react";
 
 import { Button } from "@/components/ui/button";
 import { DisplayMap } from "@/components/common";
 
-import { checkersSocketClient } from "@/lib/socket";
+import { checkersSocketClient, ticTacToeSocketClient } from "@/lib/socket";
 import { GamePlayerType, Games, OnlinePlayerType, RoomMemberType } from "@/constants";
 
 import { GAME_EVENT } from "@khel-mitra/shared/namespace/socket";
@@ -49,6 +49,8 @@ export const GameOptionsProvider = ({
 
         if (game === "Checkers") {
             checkersSocketClient.connect();
+        } else if (game === "Tic Tac Toe") {
+            ticTacToeSocketClient.connect();
         }
     }
 
@@ -56,7 +58,11 @@ export const GameOptionsProvider = ({
         setRoomMemberType(roomMemberType);
 
         if (roomMemberType === "Admin") {
-            checkersSocketClient.emit(GAME_EVENT.CREATE_ROOM);
+            if (game === "Checkers") {
+                checkersSocketClient.emit(GAME_EVENT.CREATE_ROOM);
+            } else if (game === "Tic Tac Toe") {
+                ticTacToeSocketClient.emit(GAME_EVENT.CREATE_ROOM);
+            }
         }
     }
 
@@ -64,28 +70,36 @@ export const GameOptionsProvider = ({
         reset();
     }
 
-    function reset() {
+    const reset = useCallback(() => {
         changePlayerType(undefined);
         setOnlinePlayerType(undefined);
         setRoomMemberType(undefined);
-    }
+    }, []);
 
     React.useEffect(() => {
-        checkersSocketClient.on("token", (res: SocketResponse<{ token: string }>) => {
-            console.log(res)
+        const handlePlayerAccessToken = (res: SocketResponse<{ token: string }>) => {
+            console.log(res);
             if (res.data && res.data.token) {
                 localStorage.setItem(PLAYER_ACCESS_TOKEN_NAMESPACE, res.data.token);
             }
-        });
+        };
+
+        checkersSocketClient.on("token", handlePlayerAccessToken);
+        ticTacToeSocketClient.on("token", handlePlayerAccessToken);
 
         return () => {
             if (game === "Checkers" && checkersSocketClient.connected) {
+                checkersSocketClient.off("token", handlePlayerAccessToken);
                 checkersSocketClient.disconnect();
+            }
+            if (game === "Tic Tac Toe" && ticTacToeSocketClient.connected) {
+                ticTacToeSocketClient.off("token", handlePlayerAccessToken);
+                ticTacToeSocketClient.disconnect();
             }
             localStorage.removeItem(PLAYER_ACCESS_TOKEN_NAMESPACE);
             reset();
         };
-    }, [game]);
+    }, [game, reset]);
 
     if (!playerType) {
         return (
