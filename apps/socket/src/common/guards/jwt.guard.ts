@@ -9,9 +9,10 @@ import { extractTokenFromCookies } from '../../utils';
 @Injectable()
 export class JwtGuard implements CanActivate {
     canActivate(context: ExecutionContext): boolean {
+        console.log('access token');
         const client: Socket = context.switchToWs().getClient<Socket>();
         const accessToken = extractTokenFromCookies(client);
-        
+
         try {
             const data: any = jwt.verify(accessToken, process.env.JWT_ACCESS_SECRET!);
 

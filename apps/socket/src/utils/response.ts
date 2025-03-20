@@ -10,15 +10,17 @@ export const Success = <T extends object | undefined>(
 ) => {
     const response = new SocketResponse({ success: true, data, message });
 
-    client.emit(event, response);
+    setImmediate(() => {
+        client.emit(event, response);
+    });
 
     return response;
 };
 
 export const Failure = (client: Socket, event: string, error: any, message?: string) => {
     const errorMessage = error?.message || `Failed - ${event}`;
-    const response = new SocketResponse({ success: false,  error: errorMessage, message });
-    
+    const response = new SocketResponse({ success: false, error: errorMessage, message });
+
     client.emit(event, response);
 
     return response;
