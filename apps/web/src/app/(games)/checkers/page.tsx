@@ -1,17 +1,21 @@
 "use client";
 
-import React from "react";
+import React, { useEffect } from "react";
 import { Button } from "@/components/ui/button";
 
 import { ArrowLeftIcon } from "lucide-react";
 import { useGameOptions } from "@/providers";
-import { checkersSocketClient } from "@/lib/socket";
 import { useOnlineCheckers } from "@/checkers/_lib/hooks";
 import { RandomPlayerRoom, CreateRoom, JoinRoomForm, OnlineCheckers } from "@/checkers/_components";
 
 export default function CheckersPage() {
-    const { playerType, onlinePlayerType, roomMemberType, back } = useGameOptions();
+    const { playerType, onlinePlayerType, changePlayerType, roomMemberType, back } =
+        useGameOptions();
     const { status } = useOnlineCheckers();
+
+    useEffect(() => {
+        changePlayerType("Online");
+    }, [changePlayerType]);
 
     if (onlinePlayerType && status !== "idle") {
         return <OnlineCheckers />;
@@ -38,10 +42,7 @@ export default function CheckersPage() {
                 </Button>
             </div>
             <div className="w-full flex items-center justify-center gap-3">
-                <Button onClick={() => checkersSocketClient.connect()}>Connect</Button>
-                <Button variant="secondary" onClick={() => checkersSocketClient.disconnect()}>
-                    Disconnect
-                </Button>
+                Something went wrong!
             </div>
         </React.Fragment>
     );
