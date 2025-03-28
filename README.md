@@ -1,84 +1,83 @@
-# Turborepo starter
+# Khel-Mitra
 
-This Turborepo starter is maintained by the Turborepo core team.
+Khel-Mitra is a real-time multiplayer gaming platform where users can play classic games like Checkers and Tic-Tac-Toe. The platform supports live gameplay, matchmaking, and player stats tracking.
 
-## Using this example
+## Features
 
-Run the following command:
+- **Real-time Multiplayer Gaming**: Play against friends or random players.
+- **Available Games**:
+    - Checkers
+    - Tic-Tac-Toe
+- **Live Matchmaking**: Automatically pair players in real-time.
+- **Authentication**: Sign in as a register an account.
+- **Leaderboard & Stats**: Track wins, losses, and rankings.
 
-```sh
-npx create-turbo@latest
-```
+## Tech Stack
 
-## What's inside?
+- **Monorepo Setup**: [Turborepo](https://turbo.build/)
+- **Package Manager**: [pnpm](https://pnpm.io/)
+- **Apps**:
 
-This Turborepo includes the following packages/apps:
+    - **Web**: [Next.js](https://nextjs.org/), UI with [shadcn](https://ui.shadcn.com/)
+    - **API**: [Nest.js](https://nestjs.com/) (Handles authentication, game logic, leaderboard, and matchmaking)
+    - **Socket**: [Nest.js](https://nestjs.com/) (Manages real-time player interactions and game events)
 
-### Apps and Packages
+- **Packages**:
+    - **DB**: [Prisma](https://www.prisma.io/), [PostgreSQL](https://www.postgresql.org/)
+    - **Shared**: Common utilities, game logic, and types
 
-- `docs`: a [Next.js](https://nextjs.org/) app
-- `web`: another [Next.js](https://nextjs.org/) app
-- `@repo/ui`: a stub React component library shared by both `web` and `docs` applications
-- `@repo/eslint-config`: `eslint` configurations (includes `eslint-config-next` and `eslint-config-prettier`)
-- `@repo/typescript-config`: `tsconfig.json`s used throughout the monorepo
+## Architecture Overview
 
-Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
+Khel-Mitra follows a modular monorepo architecture using **Turborepo**, ensuring efficient development and code sharing.
 
-### Utilities
+- **Web App (Next.js)**: Provides the frontend UI for players.
+- **API Service (Nest.js)**: Handles authentication, matchmaking, and database interactions.
+- **Socket Service (Nest.js & Socket.io)**: Ensures real-time communication between players.
+- **Database (PostgreSQL & Prisma)**: Stores user data, game history, and leaderboards.
+- **Shared Package**: Contains common utilities, game logic, and TypeScript types shared across all services.
 
-This Turborepo has some additional tools already setup for you:
+## Installation & Setup
 
-- [TypeScript](https://www.typescriptlang.org/) for static type checking
-- [ESLint](https://eslint.org/) for code linting
-- [Prettier](https://prettier.io) for code formatting
+### Prerequisites
 
-### Build
+- [Node.js](https://nodejs.org/) (v18+)
+- [pnpm](https://pnpm.io/) (Package Manager)
+- [PostgreSQL](https://www.postgresql.org/)
 
-To build all apps and packages, run the following command:
+### Steps to Run Locally
 
-```
-cd my-turborepo
-pnpm build
-```
+1. Clone the repository:
 
-### Develop
+    ```sh
+    git clone https://github.com/your-username/khel-mitra.git
+    cd khel-mitra
+    ```
 
-To develop all apps and packages, run the following command:
+2. Install dependencies using pnpm:
 
-```
-cd my-turborepo
-pnpm dev
-```
+    ```sh
+    pnpm install
+    ```
 
-### Remote Caching
+3. Set up environment variables:
+   change file name `.env.example` to `.env`
+4. Start the development servers:
 
-> [!TIP]
-> Vercel Remote Cache is free for all plans. Get started today at [vercel.com](https://vercel.com/signup?/signup?utm_source=remote-cache-sdk&utm_campaign=free_remote_cache).
+    ```sh
+    pnpm run dev
+    ```
 
-Turborepo can use a technique known as [Remote Caching](https://turbo.build/repo/docs/core-concepts/remote-caching) to share cache artifacts across machines, enabling you to share build caches with your team and CI/CD pipelines.
+This will start all apps and services in parallel.
 
-By default, Turborepo will cache locally. To enable Remote Caching you will need an account with Vercel. If you don't have an account you can [create one](https://vercel.com/signup?utm_source=turborepo-examples), then enter the following commands:
+## How to Play
 
-```
-cd my-turborepo
-npx turbo login
-```
+1. Register an account or play as a guest.
+2. Choose a game from the available options.
+3. Match with an opponent through the matchmaking system.
+4. Play the game in real-time with live updates.
 
-This will authenticate the Turborepo CLI with your [Vercel account](https://vercel.com/docs/concepts/personal-accounts/overview).
+### Happy coding!
 
-Next, you can link your Turborepo to your Remote Cache by running the following command from the root of your Turborepo:
+#### Contact
 
-```
-npx turbo link
-```
-
-## Useful Links
-
-Learn more about the power of Turborepo:
-
-- [Tasks](https://turbo.build/repo/docs/core-concepts/monorepos/running-tasks)
-- [Caching](https://turbo.build/repo/docs/core-concepts/caching)
-- [Remote Caching](https://turbo.build/repo/docs/core-concepts/remote-caching)
-- [Filtering](https://turbo.build/repo/docs/core-concepts/monorepos/filtering)
-- [Configuration Options](https://turbo.build/repo/docs/reference/configuration)
-- [CLI Usage](https://turbo.build/repo/docs/reference/command-line-reference)
+Email Address - subhop.me@gmail.com
