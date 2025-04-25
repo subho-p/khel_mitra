@@ -15,6 +15,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useSession } from "@/hooks";
 import { signout } from "@/services/auth.service";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { Button } from "@/components/ui/button";
 
 export const UserButton: React.FC = ({}) => {
     const router = useRouter();
@@ -33,6 +34,17 @@ export const UserButton: React.FC = ({}) => {
         onError: () => {},
     });
 
+    if (!isAuthenticated) {
+        return (
+            <Button
+                className="text-md font-bold hover:cursor-pointer px-6 py-3"
+                onClick={() => router.push("/auth/signin")}
+            >
+                Sign in
+            </Button>
+        );
+    }
+
     return (
         <div>
             <DropdownMenu>
@@ -45,29 +57,15 @@ export const UserButton: React.FC = ({}) => {
                     </Avatar>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent>
-                    {isAuthenticated ? (
-                        <React.Fragment>
-                            <DropdownMenuItem
-                                onClick={() => router.push("/profile")}
-                            >
-                                My Profile
-                            </DropdownMenuItem>
-                            <DropdownMenuItem
-                                onClick={() => router.push("/settings")}
-                            >
-                                Settings
-                            </DropdownMenuItem>
-                            <DropdownMenuItem onClick={() => userSignout()}>
-                                Sign out
-                            </DropdownMenuItem>
-                        </React.Fragment>
-                    ) : (
-                        <DropdownMenuItem
-                            onClick={() => router.push("/auth/signin")}
-                        >
-                            Sign in
+                    <React.Fragment>
+                        <DropdownMenuItem onClick={() => router.push("/profile")}>
+                            My Profile
                         </DropdownMenuItem>
-                    )}
+                        <DropdownMenuItem onClick={() => router.push("/settings")}>
+                            Settings
+                        </DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => userSignout()}>Sign out</DropdownMenuItem>
+                    </React.Fragment>
                 </DropdownMenuContent>
             </DropdownMenu>
         </div>
