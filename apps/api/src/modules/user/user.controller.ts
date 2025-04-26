@@ -7,7 +7,7 @@ import { Controller, Get, UseGuards } from '@nestjs/common';
 @Controller('users')
 export class UserController {
     @Get('me')
-    getMe(@GetUser() user: Omit<User, 'password'>) {
+    getMe(@GetUser() user: User) {
         try {
             return { data: { user } };
         } catch (error) {
