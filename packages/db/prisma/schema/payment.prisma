@@ -1,8 +1,8 @@
 model Payment {
     id        Int    @id @default(autoincrement())
     orderId   String
-    paymentId String @unique
-    signature String
+    paymentId String?
+    signature String?
 
     userId Int
     user   User   @relation(fields: [userId], references: [id])
