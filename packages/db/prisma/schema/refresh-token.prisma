@@ -1,6 +1,6 @@
 model RefreshToken {
     token     String
-    userId    String   @unique
+    userId    Int   @unique
     expiresAt DateTime
 
     user User @relation(fields: [userId], references: [id])
