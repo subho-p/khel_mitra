@@ -9,9 +9,16 @@ model Payment {
 
     amount Int
     tokens Int
+    status PaymentStatus @default(PENDING)
 
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
 
     @@map("payments")
+}
+
+enum PaymentStatus {
+    PENDING
+    SUCCESS
+    FAILED
 }
