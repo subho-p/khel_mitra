@@ -2,35 +2,34 @@ import prisma from "./index.js";
 
 const gameToken = [
     {
-        tokens: 100,
+        coins: 100,
         amount: 8000,
     },
     {
-        tokens: 200,
+        coins: 200,
         amount: 16000,
     },
     {
-        tokens: 500,
+        coins: 500,
         amount: 32000,
     },
     {
-        tokens: 1000,
+        coins: 1000,
         amount: 60000,
     },
     {
-        tokens: 2000,
+        coins: 2000,
         amount: 110000,
     },
     {
-        tokens: 5000,
+        coins: 5000,
         amount: 200000,
     },
 ];
 
-
 async function seeds() {
     try {
-        await prisma.gameToken.createMany({ data: gameToken });
+        await prisma.gameCoin.createMany({ data: gameToken });
 
         console.log("[Seed]: done!");
     } catch (error: any) {
