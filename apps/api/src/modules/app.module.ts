@@ -8,6 +8,8 @@ import { AuthModule } from './auth/auth.module';
 import { HealthModule } from './health/health.module';
 import { PrismaModule } from '../libs/db/db.module';
 import { UserModule } from './user/user.module';
+import { PaymentModule } from './payments/payments.module';
+import { GameCoinsModule } from './game-coins/game-coins.module';
 
 @Module({
     imports: [
@@ -18,6 +20,8 @@ import { UserModule } from './user/user.module';
         UserModule,
         HealthModule,
         PrismaModule,
+        PaymentModule,
+        GameCoinsModule,
     ],
     providers: [
         {

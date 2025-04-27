@@ -5,6 +5,8 @@
     "main": "dist/index.js",
     "scripts": {
         "build": "tsc -b",
+        "seeds": "pnpm build && node dist/seed.js",
+        "dev": "prisma studio --browser=none",
         "prisma:dev:deploy": "prisma migrate deploy",
         "db:dev:up": "docker compose up khel-mitra-db -d",
         "db:dev:down": "docker compose down khel-mitra-db",

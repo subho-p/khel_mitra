@@ -1,0 +1,20 @@
+model TransactionHistory {
+    id     Int  @id @default(autoincrement())
+    userId Int
+    user   User @relation(fields: [userId], references: [id])
+
+    type      TransactionType
+    amount    Int
+    reference String?
+
+    createdAt DateTime @default(now())
+
+    @@map("transaction_history")
+}
+
+enum TransactionType {
+    PURCHASE
+    SPEND
+    REWARD
+    BONUS
+}

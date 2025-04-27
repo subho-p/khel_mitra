@@ -1,0 +1,25 @@
+model GameHistory {
+    id           Int          @id @default(autoincrement())
+    name         String
+    winnerId     Int?
+    bettingCoins Int?
+    players      GamePlayer[]
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    winner User? @relation("Winner", fields: [winnerId], references: [id])
+
+    @@map("game_history")
+}
+
+model GamePlayer {
+    id     Int    @id @default(autoincrement())
+    userId Int
+    gameId Int
+
+    user User        @relation(fields: [userId], references: [id])
+    game GameHistory @relation(fields: [gameId], references: [id])
+
+    @@unique([userId, gameId])
+}

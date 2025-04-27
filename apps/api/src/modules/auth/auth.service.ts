@@ -17,7 +17,7 @@ export class AuthService {
         private configService: ConfigService,
     ) {}
 
-    async addRefreshToken(userId: string, token: string) {
+    async addRefreshToken(userId: number, token: string) {
         const hashToken = await argon.hash(token);
         await this.prisma.refreshToken.upsert({
             where: { userId },
@@ -26,7 +26,7 @@ export class AuthService {
         });
     }
 
-    async validateRefreshToken(token: string, userId: string): Promise<boolean> {
+    async validateRefreshToken(token: string, userId: number): Promise<boolean> {
         try {
             const refreshToken = await this.prisma.refreshToken.findUnique({ where: { userId } });
             if (!refreshToken) {
@@ -39,7 +39,7 @@ export class AuthService {
         }
     }
 
-    async removeRefreshToken(userId: string): Promise<void> {
+    async removeRefreshToken(userId: number): Promise<void> {
         try {
             await this.prisma.refreshToken.delete({ where: { userId } });
         } catch {
@@ -57,7 +57,7 @@ export class AuthService {
         );
     }
 
-    private signRefreshToken(userId: string) {
+    private signRefreshToken(userId: number) {
         return this.jwtService.sign(
             { sub: userId },
             {

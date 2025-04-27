@@ -1,0 +1,9 @@
+model GameCoin {
+    id       Int     @id @default(autoincrement())
+    amount   Int
+    coins    Int
+    imageUrl String?
+
+    @@index([amount])
+    @@map("game_coins")
+}

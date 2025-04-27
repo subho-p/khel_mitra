@@ -50,7 +50,11 @@ export class AuthController {
                 data: {
                     email: email.toLowerCase(),
                     username: randomUsername,
-                    password: hashedPassword,
+                    password: {
+                        create: {
+                            hash: hashedPassword,
+                        },
+                    },
                 },
             });
 
@@ -71,11 +75,17 @@ export class AuthController {
     async signIn(@Body() data: SignInSchema, @Res() res: Response) {
         try {
             const { email, password } = data;
-            const user = await this.prisma.user.findUnique({ where: { email } });
+            const user = await this.prisma.user.findUnique({
+                where: { email },
+                include: { password: true },
+            });
             if (!user) {
                 throw new BadRequestException('Email not found');
             }
-            if (!(await argon.verify(user.password!, password))) {
+            if (!user.password) {
+                throw new BadRequestException('Password not found');
+            }
+            if (!(await argon.verify(user.password?.hash, password))) {
                 throw new BadRequestException('Invalid credentials');
             }
 
