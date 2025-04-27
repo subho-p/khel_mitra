@@ -16,6 +16,7 @@ model User {
     gamesWon          GameHistory[]        @relation("Winner")
     transactions      TransactionHistory[]
     couponRedemptions CouponRedemption[]
+    notifications Notification[]
 
     @@map("users")
 }
