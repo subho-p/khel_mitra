@@ -10,6 +10,7 @@ import { PrismaModule } from '../libs/db/db.module';
 import { UserModule } from './user/user.module';
 import { PaymentModule } from './payments/payments.module';
 import { GameCoinsModule } from './game-coins/game-coins.module';
+import { NotificationsModule } from './notifications/notifications.module';
 
 @Module({
     imports: [
@@ -22,6 +23,7 @@ import { GameCoinsModule } from './game-coins/game-coins.module';
         PrismaModule,
         PaymentModule,
         GameCoinsModule,
+        NotificationsModule,
     ],
     providers: [
         {
