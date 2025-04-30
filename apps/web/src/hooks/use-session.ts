@@ -1,7 +1,3 @@
-import React from "react";
-import { SessionContext } from "@/providers";
+import { useSessionStore } from "@/store/useSessionStore";
 
-export const useSession = () => {
-    const context = React.useContext(SessionContext);
-    return context;
-};
+export const useSession = () => useSessionStore();

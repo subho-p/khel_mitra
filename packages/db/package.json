@@ -22,11 +22,14 @@
     "keywords": [],
     "license": "ISC",
     "devDependencies": {
-        "prisma": "^6.4.0",
-        "typescript": "^5.7.3"
+        "prisma": "^6.6.0",
+        "typescript": "^5.8.3"
     },
     "exports": {
         ".": "./dist/index.js",
         "./prisma": "./dist/index.js"
+    },
+    "prisma": {
+        "schema": "./prisma/schema"
     }
 }

@@ -32,8 +32,8 @@ export async function middleware(request: NextRequest) {
     if (
         !isPublicRoute &&
         !isAuthRoute &&
-        !isAuthenticated &&
-        process.env.NODE_ENV === "production"
+        !isAuthenticated
+        // && process.env.NODE_ENV === "production"
     ) {
         const callbackUrl = encodeURIComponent(pathname);
         return NextResponse.redirect(new URL(`/auth/signin?callback=${callbackUrl}`, origin));

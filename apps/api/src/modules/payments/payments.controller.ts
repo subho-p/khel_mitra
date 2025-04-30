@@ -4,6 +4,7 @@ import {
     Controller,
     HttpCode,
     HttpStatus,
+    Logger,
     Post,
     UseGuards,
 } from '@nestjs/common';
@@ -34,17 +35,22 @@ export class PaymentController {
         @Body(new ZodValidationPipe(createOrderBody)) body: CreateOrderBody,
         @GetUser() user: User,
     ) {
-        const order = await this.razor.createOrder({
-            amount: body.amount,
-            currency: 'INR',
-        });
+        try {
+            const order = await this.razor.createOrder({
+                amount: body.amount,
+                currency: 'INR',
+            });
 
-        // create payment
-        await this.service.createPendingPayment(user?.id, order.id, body.amount);
-        return {
-            success: true,
-            data: { order },
-        };
+            // create payment
+            await this.service.createPendingPayment(user?.id, order.id, body.amount);
+            return {
+                success: true,
+                data: { order },
+            };
+        } catch (error) {
+            Logger.error(error, 'Payment');
+            throw new BadRequestException('Payment failed');
+        }
     }
 
     @Post('verify')
