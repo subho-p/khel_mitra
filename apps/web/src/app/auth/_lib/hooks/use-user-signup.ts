@@ -1,18 +1,20 @@
 import React from "react";
-import { ACCESS_TOKEN_NAMESPACE } from "@/constants";
 import { useRouter, useSearchParams } from "next/navigation";
 
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import { signup } from "@/services/auth.service";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import { signUpSchema, SignUpSchema } from "@khel-mitra/shared/validator";
+import { useSessionStore } from "@/store/useSessionStore";
+import { useNotificationStore } from "@/store/useNotificationStore";
 
 export const useUserSignup = () => {
     const router = useRouter();
     const searchParams = useSearchParams();
-    const queryClient = useQueryClient();
+    const { fetchUserData } = useSessionStore();
+    const { fetchNotifications } = useNotificationStore();
 
     const [successMessage, setSuccessMessage] = React.useState<string>();
 
@@ -27,12 +29,11 @@ export const useUserSignup = () => {
     const { mutate: submitForm, error } = useMutation({
         mutationKey: ["user", "signup", "email"],
         mutationFn: signup,
-        onSuccess: (data) => {
+        onSuccess: async () => {
+            await fetchUserData();
+            await fetchNotifications();
             setSuccessMessage("User signup successfully");
-            localStorage.setItem(ACCESS_TOKEN_NAMESPACE, data?.accessToken);
             form.reset();
-
-            queryClient.invalidateQueries({ queryKey: ["user", "me"] });
 
             const callback = searchParams.get("callback");
             if (callback) {
