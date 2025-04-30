@@ -1,7 +1,7 @@
 import { api } from "@/lib/axios";
 import { Notification } from "@/types/notification.type";
 
-export const getNotifications = (userId: string): Promise<{ notifications: Notification[] }> => {
+export const getNotifications = (userId = "me"): Promise<{ notifications: Notification[] }> => {
     return api.get(`/notifications/${userId}`);
 };
 

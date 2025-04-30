@@ -6,7 +6,7 @@ import { X } from "lucide-react";
 import { useNotificationStore } from "@/store/useNotificationStore";
 
 export default function NotificationPage() {
-    const { notifications } = useNotificationStore();
+    const { notifications, toggleRead, deleteNotification } = useNotificationStore();
 
     return (
         <div className="w-full py-8 px-4 flex items-center justify-center">
@@ -16,8 +16,8 @@ export default function NotificationPage() {
                 </h2>
                 <NotificationList
                     notifications={notifications}
-                    onClickNotification={() => {}}
-                    onDeleteNotification={() => {}}
+                    onClickNotification={toggleRead}
+                    onDeleteNotification={deleteNotification}
                 />
             </div>
         </div>
@@ -57,7 +57,7 @@ const NotificationList = ({
     onDeleteNotification,
 }: {
     notifications: Notification[];
-    onClickNotification: (notification: Notification) => void;
+    onClickNotification: (id: string) => void;
     onDeleteNotification: (id: string) => void;
 }) => {
     return (
@@ -74,7 +74,7 @@ const NotificationList = ({
                     variants={cardVariants}
                     role="button"
                     tabIndex={0}
-                    onClick={() => onClickNotification(notification)}
+                    onClick={() => onClickNotification(notification.id)}
                     className="relative w-full cursor-pointer flex flex-col gap-2 p-4 border bg-secondary rounded-lg hover:bg-secondary/90 hover:shadow-md group focus:outline-none focus:ring-2 focus:ring-primary pr-10"
                     aria-label={`Notification: ${notification.title}`}
                 >
