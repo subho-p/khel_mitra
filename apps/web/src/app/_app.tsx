@@ -6,18 +6,19 @@ import { Toaster } from "@/components/ui/toaster";
 import { useNotificationStore } from "@/store/useNotificationStore";
 import { useSessionStore } from "@/store/useSessionStore";
 import Loading from "@/components/Loading";
+import { socketManager } from "@/socket/socket.manager";
 
 export default function App({ children }: { children: React.ReactNode }) {
     const [isMounted, setIsMounted] = React.useState(false);
 
-    const { notifications, fetchNotifications, clearNotifications } =
-        useNotificationStore();
-    const { refreshToken, status } = useSessionStore();
+    const { notifications, fetchNotifications, clearNotifications } = useNotificationStore();
+    const { refreshToken, status, clearSession } = useSessionStore();
 
     React.useEffect(() => {
         async function initData() {
             await refreshToken().then(() => {
                 fetchNotifications();
+                socketManager.connect();
             });
         }
 
@@ -33,13 +34,15 @@ export default function App({ children }: { children: React.ReactNode }) {
     React.useEffect(() => {
         return () => {
             clearNotifications();
+            clearSession();
+            socketManager.disconnect();
         };
     }, []);
 
     useEffect(() => {
         const timer = setTimeout(() => {
             setIsMounted(true);
-        }, 3000);
+        }, 1000);
 
         return () => clearTimeout(timer);
     }, []);

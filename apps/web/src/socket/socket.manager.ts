@@ -1,3 +1,4 @@
+import { toast } from "@/hooks";
 import { io, Socket } from "socket.io-client";
 
 type SocketEventHandler = {
@@ -35,6 +36,14 @@ export class SocketManager {
 
         this.socket.on("connect", () => {
             console.log("Socket connected:", this.socket?.id);
+
+            this.socket?.on("app:toast", ({ data }) => {
+                toast({
+                    ...data,
+                    duration: 10_000,
+                });
+                this.socket?.off("app:toast");
+            });
         });
 
         this.socket.on("disconnect", (reason) => {

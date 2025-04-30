@@ -21,25 +21,47 @@ export class SocketRegistryService {
     }
 
     registerClient(client: Socket) {
-        const userId = this.getUserId(client);
-        if (!userId) {
+        const data = this.getUserData(client);
+        if (!data) {
             this.logger.warn(`Failed to register client: ${client.id} (no user id)`);
             return;
         }
+        const { id: userId, username } = data;
 
         if (!this.users.has(userId)) {
             this.users.set(userId, client);
         }
         this.sockets.set(client.id, userId);
         this.logger.debug(`Client registered: ${client.id} - User: ${userId}`);
+
+        client.emit('app:toast', {
+            data: {
+                title: `Welcome back ${username}`,
+                description: this.greetingMessage(),
+            },
+        });
+    }
+
+    private greetingMessage() {
+        const time = new Date().getHours();
+        console.log(time);
+
+        const messages = [
+            { time: 12, message: 'Good Morning!' },
+            { time: 16, message: 'Good Afternoon!' },
+            { time: 20, message: 'Good Evening!' },
+        ];
+
+        return messages.find((m) => m.time > time)?.message;
     }
 
     unRegisterClient(client: Socket) {
-        const userId = this.getUserId(client);
-        if (!userId) {
+        const data = this.getUserData(client);
+        if (!data) {
             this.logger.warn(`Failed to unregister client: ${client.id}`);
             return;
         }
+        const { id: userId } = data;
 
         if (!this.users.has(userId)) {
             this.logger.warn(`No socketId found for userId: ${userId}`);
@@ -47,13 +69,13 @@ export class SocketRegistryService {
         }
 
         this.users.delete(userId);
-        this.sockets.delete(client.id)
-        
+        this.sockets.delete(client.id);
+
         this.logger.debug(`Client unregistered: ${client.id} - User: ${userId}`);
     }
 
-     getSocketByUserId(id: number){
-        return this.users.get(id)
+    getSocketByUserId(id: number) {
+        return this.users.get(id);
     }
 
     private getAccessToken(socket: Socket) {
@@ -67,7 +89,7 @@ export class SocketRegistryService {
         return accessToken;
     }
 
-    private getUserId(socket: Socket): number | null {
+    private getUserData(socket: Socket) {
         const accessToken = this.getAccessToken(socket);
         if (!accessToken) {
             this.logger.warn('No access token found (getUserId)');
@@ -89,7 +111,11 @@ export class SocketRegistryService {
                 return null;
             }
 
-            return Number(userId);
+            const username = decodedAccessToken?.username;
+            return {
+                id: Number(userId),
+                username,
+            };
         } catch {
             this.logger.warn('Invalid access token (getUserId)');
             return null;
@@ -97,7 +123,7 @@ export class SocketRegistryService {
     }
 
     protected checkUser(socket: Socket): boolean {
-        const userId = this.getUserId(socket);
-        return !!userId;
+        const data = this.getUserData(socket);
+        return !!data;
     }
 }
