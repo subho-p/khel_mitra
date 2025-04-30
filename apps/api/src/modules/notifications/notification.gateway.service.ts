@@ -1,26 +1,37 @@
-import { Injectable } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
-import { JwtService } from '@nestjs/jwt';
+import { Injectable, Logger } from '@nestjs/common';
 import { Server } from 'socket.io';
-import { SocketService } from 'src/libs/services/socket.service';
+import { SocketRegistryService } from '../share/socket-registry.service';
+import { WsException } from '@nestjs/websockets';
+import { createNotificationSchema, CreateNotificationSchema } from './schemas';
+import { zodValidation } from 'src/libs/utils/zod';
+import { NotificationsService } from './notifications.service';
 
 @Injectable()
-export class NotificationGatewayService extends SocketService {
-    constructor(jwtService: JwtService, configService: ConfigService) {
-        super('NotificationGatewayService', jwtService, configService);
+export class NotificationGatewayService {
+    private readonly logger: Logger;
+    private _server: Server;
+
+    constructor(
+        private readonly socketRegisty: SocketRegistryService,
+        private notificationService: NotificationsService,
+    ) {
+        this.logger = new Logger(NotificationGatewayService.name);
     }
 
     set server(server: Server) {
+        this.logger.debug('Set server');
         this._server = server;
     }
 
-    sendNewNotification(userId: number, payload: any) {
-        const socketId = this.userIdMap.get(userId);
-        if (!socketId) {
-            this.logger.warn(`No socketId found for userId: ${userId}`);
-            return;
+    async sendNewNotification(userId: number, payload: CreateNotificationSchema) {
+        const socket = this.socketRegisty.getSocketByUserId(userId);
+        if (!socket) {
+            throw new WsException('Socket not found');
         }
 
-        this._server.to(socketId).emit('notification:new', payload);
+        const data = zodValidation(createNotificationSchema, payload);
+        const notification = await this.notificationService.create(userId, data);
+
+        socket.emit('notification:new', { data: { notification } });
     }
 }

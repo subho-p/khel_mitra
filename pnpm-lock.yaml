@@ -56,6 +56,9 @@ importers:
       '@nestjs/throttler':
         specifier: ^6.4.0
         version: 6.4.0(@nestjs/common@11.1.0(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.0(@nestjs/common@11.1.0(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/platform-express@11.1.0)(@nestjs/websockets@11.0.10)(reflect-metadata@0.2.2)(rxjs@7.8.2))(reflect-metadata@0.2.2)
+      '@nestjs/websockets':
+        specifier: ^11.0.10
+        version: 11.0.10(@nestjs/common@11.1.0(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.0)(@nestjs/platform-socket.io@11.0.10)(reflect-metadata@0.2.2)(rxjs@7.8.2)
       '@prisma/client':
         specifier: 6.4.0
         version: 6.4.0(prisma@6.6.0(typescript@5.8.3))(typescript@5.8.3)
@@ -89,6 +92,9 @@ importers:
       rxjs:
         specifier: ^7.8.2
         version: 7.8.2
+      socket.io:
+        specifier: ^4.8.1
+        version: 4.8.1
       uuid:
         specifier: ^11.1.0
         version: 11.1.0
@@ -5031,20 +5037,12 @@ packages:
     resolution: {integrity: sha512-sPU4uV7dYlvtWJxwwxHD0PuihVNiE7TyAbQ5SWxDCB9mUYvOgroQOwYQQOKPJ8CIbE+1ETVlOoK1UC2nU3gYvg==}
     engines: {node: '>= 0.6'}
 
-  mime-db@1.53.0:
-    resolution: {integrity: sha512-oHlN/w+3MQ3rba9rqFr6V/ypF10LSkdwUysQL7GkXoTgIWeV+tcXGA852TBxH+gsh8UWoyhR1hKcoMJTuWflpg==}
-    engines: {node: '>= 0.6'}
-
   mime-db@1.54.0:
     resolution: {integrity: sha512-aU5EJuIN2WDemCcAp2vFBfp/m4EAhWJnUNSSw0ixs7/kXbd6Pg64EmwJkNdFhB8aWt1sH2CTXrLxo/iAGV3oPQ==}
     engines: {node: '>= 0.6'}
 
   mime-types@2.1.35:
     resolution: {integrity: sha512-ZDY+bPm5zTTF+YpCrAU9nK0UgICYPT0QtT1NZWFv4s++TNkcgVaT0g6+4R2uI4MjQjzysHB1zxuWL50hzaeXiw==}
-    engines: {node: '>= 0.6'}
-
-  mime-types@3.0.0:
-    resolution: {integrity: sha512-XqoSHeCGjVClAmoGFG3lVFqQFRIrTVw2OH3axRqAcfaw+gHWIfnASS92AV+Rl/mk0MupgZTRHQOjxY6YVnzK5w==}
     engines: {node: '>= 0.6'}
 
   mime-types@3.0.1:
@@ -7719,7 +7717,7 @@ snapshots:
   '@jest/console@29.7.0':
     dependencies:
       '@jest/types': 29.6.3
-      '@types/node': 22.13.4
+      '@types/node': 22.15.2
       chalk: 4.1.2
       jest-message-util: 29.7.0
       jest-util: 29.7.0
@@ -7839,7 +7837,7 @@ snapshots:
       '@jest/transform': 29.7.0
       '@jest/types': 29.6.3
       '@jridgewell/trace-mapping': 0.3.25
-      '@types/node': 22.13.4
+      '@types/node': 22.15.2
       chalk: 4.1.2
       collect-v8-coverage: 1.0.2
       exit: 0.1.2
@@ -8306,7 +8304,6 @@ snapshots:
       tslib: 2.8.1
     optionalDependencies:
       '@nestjs/platform-socket.io': 11.0.10(@nestjs/common@11.1.0(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/websockets@11.0.10)(rxjs@7.8.2)
-    optional: true
 
   '@next/env@15.1.7': {}
 
@@ -9026,7 +9023,7 @@ snapshots:
 
   '@types/cors@2.8.17':
     dependencies:
-      '@types/node': 22.13.4
+      '@types/node': 22.15.2
 
   '@types/eslint-scope@3.7.7':
     dependencies:
@@ -9064,7 +9061,7 @@ snapshots:
 
   '@types/graceful-fs@4.1.9':
     dependencies:
-      '@types/node': 22.13.4
+      '@types/node': 22.15.2
 
   '@types/http-cache-semantics@4.0.4': {}
 
@@ -9545,7 +9542,7 @@ snapshots:
 
   accepts@2.0.0:
     dependencies:
-      mime-types: 3.0.0
+      mime-types: 3.0.1
       negotiator: 1.0.0
 
   acorn-jsx@5.3.2(acorn@8.14.1):
@@ -10331,12 +10328,12 @@ snapshots:
   engine.io@6.6.4:
     dependencies:
       '@types/cors': 2.8.17
-      '@types/node': 22.13.4
+      '@types/node': 22.15.2
       accepts: 1.3.8
       base64id: 2.0.0
       cookie: 0.7.2
       cors: 2.8.5
-      debug: 4.3.6
+      debug: 4.3.7
       engine.io-parser: 5.2.3
       ws: 8.17.1
     transitivePeerDependencies:
@@ -10856,7 +10853,7 @@ snapshots:
       http-errors: 2.0.0
       merge-descriptors: 2.0.0
       methods: 1.1.2
-      mime-types: 3.0.0
+      mime-types: 3.0.1
       on-finished: 2.4.1
       once: 1.4.0
       parseurl: 1.3.3
@@ -10909,7 +10906,7 @@ snapshots:
 
   ext-list@2.2.2:
     dependencies:
-      mime-db: 1.53.0
+      mime-db: 1.54.0
 
   ext-name@5.0.0:
     dependencies:
@@ -11565,7 +11562,7 @@ snapshots:
       '@jest/expect': 29.7.0
       '@jest/test-result': 29.7.0
       '@jest/types': 29.6.3
-      '@types/node': 22.13.4
+      '@types/node': 22.15.2
       chalk: 4.1.2
       co: 4.6.0
       dedent: 1.5.3
@@ -11740,7 +11737,7 @@ snapshots:
       '@jest/environment': 29.7.0
       '@jest/fake-timers': 29.7.0
       '@jest/types': 29.6.3
-      '@types/node': 22.13.4
+      '@types/node': 22.15.2
       jest-mock: 29.7.0
       jest-util: 29.7.0
 
@@ -11750,7 +11747,7 @@ snapshots:
     dependencies:
       '@jest/types': 29.6.3
       '@types/graceful-fs': 4.1.9
-      '@types/node': 22.13.4
+      '@types/node': 22.15.2
       anymatch: 3.1.3
       fb-watchman: 2.0.2
       graceful-fs: 4.2.11
@@ -11917,7 +11914,7 @@ snapshots:
     dependencies:
       '@jest/test-result': 29.7.0
       '@jest/types': 29.6.3
-      '@types/node': 22.13.4
+      '@types/node': 22.15.2
       ansi-escapes: 4.3.2
       chalk: 4.1.2
       emittery: 0.13.1
@@ -12193,17 +12190,11 @@ snapshots:
 
   mime-db@1.52.0: {}
 
-  mime-db@1.53.0: {}
-
   mime-db@1.54.0: {}
 
   mime-types@2.1.35:
     dependencies:
       mime-db: 1.52.0
-
-  mime-types@3.0.0:
-    dependencies:
-      mime-db: 1.53.0
 
   mime-types@3.0.1:
     dependencies:
@@ -12854,7 +12845,7 @@ snapshots:
 
   send@1.1.0:
     dependencies:
-      debug: 4.3.6
+      debug: 4.4.0
       destroy: 1.2.0
       encodeurl: 2.0.0
       escape-html: 1.0.3
@@ -13007,7 +12998,7 @@ snapshots:
 
   socket.io-adapter@2.5.5:
     dependencies:
-      debug: 4.3.6
+      debug: 4.3.7
       ws: 8.17.1
     transitivePeerDependencies:
       - bufferutil
@@ -13037,7 +13028,7 @@ snapshots:
       accepts: 1.3.8
       base64id: 2.0.0
       cors: 2.8.5
-      debug: 4.3.6
+      debug: 4.3.7
       engine.io: 6.6.4
       socket.io-adapter: 2.5.5
       socket.io-parser: 4.2.4
@@ -13510,7 +13501,7 @@ snapshots:
     dependencies:
       content-type: 1.0.5
       media-typer: 1.1.0
-      mime-types: 3.0.0
+      mime-types: 3.0.1
 
   type-is@2.0.1:
     dependencies:

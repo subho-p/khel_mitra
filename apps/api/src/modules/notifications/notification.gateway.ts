@@ -10,31 +10,34 @@ import {
 } from '@nestjs/websockets';
 import { Server, Socket } from 'socket.io';
 import { NotificationGatewayService } from './notification.gateway.service';
+import { SocketRegistryService } from '../share/socket-registry.service';
 
 @WebSocketGateway({
     cors: { credentials: true, origin: '*' },
     transports: ['websocket'],
-    
 })
 export class NotificationGateway implements OnModuleInit, OnGatewayConnection, OnGatewayDisconnect {
     @WebSocketServer() server: Server;
 
-    constructor(private readonly service: NotificationGatewayService) {}
+    constructor(
+        private readonly service: NotificationGatewayService,
+        private readonly socketRegistry: SocketRegistryService,
+    ) {}
 
     onModuleInit() {
         this.service.server = this.server;
     }
 
     handleConnection(client: Socket, ...args: any[]) {
-        this.service.registerClient(client);
+        this.socketRegistry.registerClient(client);
     }
 
     handleDisconnect(client: Socket) {
-        this.service.unRegisterClient(client);
+        this.socketRegistry.unRegisterClient(client);
     }
 
-    sendNotification(userId: number, payload: any) {
-        this.service.sendNewNotification(userId, payload);
+    async sendNotification(userId: number, payload: any) {
+        await this.service.sendNewNotification(userId, payload);
     }
 
     @SubscribeMessage('notification:ping')
