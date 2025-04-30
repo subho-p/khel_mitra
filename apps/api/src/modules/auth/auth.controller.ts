@@ -1,7 +1,6 @@
 import {
     BadRequestException,
     Body,
-    ConflictException,
     Controller,
     HttpCode,
     HttpStatus,
@@ -25,10 +24,7 @@ import { PrismaService } from 'src/libs/db/db.service';
 import { GetUser, ZodValidation } from '../../libs/decorators';
 
 import jwt from 'jsonwebtoken';
-import * as argon from 'argon2';
-import { v4 as uuid4 } from 'uuid';
 import { User } from '@prisma/client';
-import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
 import { REFRESH_TOKEN_NAMESPACE } from '@khel-mitra/shared/constanst';
 
 @Controller('auth')
@@ -43,28 +39,16 @@ export class AuthController {
     @ZodValidation(signUpSchema)
     async signUp(@Body() data: SignUpSchema, @Res() res: Response) {
         try {
-            const { email, password } = data;
-            const hashedPassword = await argon.hash(password);
-            const randomUsername = 'user' + uuid4().slice(0, 8);
-            const user = await this.prisma.user.create({
-                data: {
-                    email: email.toLowerCase(),
-                    username: randomUsername,
-                    password: {
-                        create: {
-                            hash: hashedPassword,
-                        },
-                    },
-                },
-            });
-
+            const user = await this.authService.createUser(data);
             const { accessToken } = await this.authService.setCookies(res, user);
+
+            await this.authService.sendNotification(user.id, {
+                title: 'Welcome to Khel Mitra',
+                body: 'You have successfully signed up',
+            });
 
             return res.json({ data: { accessToken } });
         } catch (error) {
-            if (error instanceof PrismaClientKnownRequestError && error.code === 'P2002') {
-                throw new ConflictException('Email is already registered.');
-            }
             throw new BadRequestException(error?.message || 'User sign up failed');
         }
     }
@@ -74,28 +58,30 @@ export class AuthController {
     @ZodValidation(signInSchema)
     async signIn(@Body() data: SignInSchema, @Res() res: Response) {
         try {
-            const { email, password } = data;
-            const user = await this.prisma.user.findUnique({
-                where: { email },
-                include: { password: true },
-            });
+            const user = await this.authService.findUserByEmail(data.email);
             if (!user) {
                 throw new BadRequestException('Email not found');
             }
-            if (!user.password) {
+            const userPassword = await this.authService.findUserPasswordByUserId(user.id);
+            if (!userPassword) {
                 throw new BadRequestException('Password not found');
             }
-            if (!(await argon.verify(user.password?.hash, password))) {
+
+            const isValidPassword = await this.authService.verifyPassword(
+                userPassword.hash,
+                data.password,
+            );
+            if (!isValidPassword) {
                 throw new BadRequestException('Invalid credentials');
             }
 
             const { accessToken } = await this.authService.setCookies(res, user);
+            await this.authService.sendNotification(user.id, {
+                title: 'Welcome to Khel Mitra',
+                body: 'You have successfully signed in',
+            });
             return res.json({ data: { accessToken } });
         } catch (error) {
-            console.log(error);
-            if (error instanceof PrismaClientKnownRequestError && error.code === 'P2021') {
-                throw new BadRequestException('Invalid credentials');
-            }
             throw new BadRequestException(error?.message || 'User sign up failed');
         }
     }

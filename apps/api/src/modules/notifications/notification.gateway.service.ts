@@ -24,13 +24,13 @@ export class NotificationGatewayService {
     }
 
     async sendNewNotification(userId: number, payload: CreateNotificationSchema) {
+        const data = zodValidation(createNotificationSchema, payload);
+        const notification = await this.notificationService.create(userId, data);
+
         const socket = this.socketRegisty.getSocketByUserId(userId);
         if (!socket) {
             throw new WsException('Socket not found');
         }
-
-        const data = zodValidation(createNotificationSchema, payload);
-        const notification = await this.notificationService.create(userId, data);
 
         socket.emit('notification:new', { data: { notification } });
     }
