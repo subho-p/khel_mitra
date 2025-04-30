@@ -13,9 +13,10 @@ const getGameData = (game: string) => {
 export async function generateMetadata({
     params,
 }: {
-    params: { game: string };
+    params: Promise<{ game: string }>;
 }): Promise<Metadata | undefined> {
-    const data = getGameData(params.game);
+    const { game } = await params;
+    const data = getGameData(game);
 
     if (data) {
         return {
@@ -25,24 +26,27 @@ export async function generateMetadata({
     }
 }
 
-export default function CheckersLayout({
+export default function Layout({
     children,
     params,
 }: {
     children: React.ReactNode;
-    params: { game: string };
+    params: Promise<{ game: string }>;
 }) {
-    const data = getGameData(params.game);
+    const { game } = React.use(params);
+    const data = getGameData(game);
     if (!data) {
         throw new Error("Game not found");
     }
 
     return (
         <React.Fragment>
-            <div className="w-full py-10">
-                <h1 className="text-2xl font-semibold tracking-wide text-center">{params.game}</h1>
-                <div className="flex flex-col w-full items-center justify-between gap-6 py-8">
-                    {children}
+            <div className="flex w-full items-center justify-center">
+                <div className="flex flex-col w-full max-w-7xl py-4">
+                    <h1 className="text-2xl font-semibold tracking-wide capitalize">{data.name}</h1>
+                    <div className="flex flex-col w-full items-center justify-between gap-6 py-8">
+                        {children}
+                    </div>
                 </div>
             </div>
         </React.Fragment>

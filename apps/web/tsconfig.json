@@ -20,7 +20,8 @@
         ],
         "paths": {
             "@/*": ["./src/*"],
-            "@/checkers/*": ["./src/app/(games)/checkers/*"]
+            "@/checkers/*": ["./src/app/(games)/checkers/*"],
+            "@/tic-tac-toe/*": ["./src/games/tic-tac-toe/*"]
         }
     },
     "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
