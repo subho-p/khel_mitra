@@ -1,10 +1,16 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/libs/db/db.service';
 import { PaymentVerifyBody } from './utils/validation.dto';
+import { NotificationGatewayService } from '../notifications/notification.gateway.service';
+import { JobQueueService } from '../share/job-queue.service';
 
 @Injectable()
 export class PaymentService {
-    constructor(private prisma: PrismaService) {}
+    constructor(
+        private prisma: PrismaService,
+        private notificationService: NotificationGatewayService,
+        private jobQueueService: JobQueueService,
+    ) {}
 
     async createPendingPayment(userId: number, orderId: string, amount: number) {
         const coinsData = await this.prisma.gameCoin.findFirst({
@@ -57,6 +63,23 @@ export class PaymentService {
                 reference: data.razorpay_payment_id,
             },
         });
+
+        await this.sendPaymentNotification(
+            userId,
+            'SUCCESS',
+            `You have successfully purchased ${payment.tokens} coins`,
+        );
+    }
+
+    async sendPaymentNotification(userId: number, status: 'FAILED' | 'SUCCESS', message: string) {
+        const notificationJob = async () =>
+            await this.notificationService.sendNewNotification(userId, {
+                type: 'PAYMENT',
+                title: status === 'FAILED' ? 'Payment failed' : 'Payment successful',
+                body: message,
+            });
+
+        await this.jobQueueService.addJob(notificationJob);
     }
 
     async updatePaymentStatus(orderId: string, status: 'FAILED' | 'SUCCESS') {
