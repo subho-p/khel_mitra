@@ -1,5 +1,4 @@
 import React from "react";
-import { ACCESS_TOKEN_NAMESPACE } from "@/constants";
 import { useRouter, useSearchParams } from "next/navigation";
 
 import { useForm } from "react-hook-form";
