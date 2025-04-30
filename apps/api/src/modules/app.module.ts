@@ -11,6 +11,7 @@ import { UserModule } from './user/user.module';
 import { PaymentModule } from './payments/payments.module';
 import { GameCoinsModule } from './game-coins/game-coins.module';
 import { NotificationsModule } from './notifications/notifications.module';
+import { ShareModule } from './share/share.module';
 
 @Module({
     imports: [
@@ -24,6 +25,7 @@ import { NotificationsModule } from './notifications/notifications.module';
         PaymentModule,
         GameCoinsModule,
         NotificationsModule,
+        ShareModule,
     ],
     providers: [
         {
