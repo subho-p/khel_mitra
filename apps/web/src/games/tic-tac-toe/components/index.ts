@@ -6,3 +6,4 @@ export * from "./Cross"
 export * from "./GamePage"
 export * from "./TicTacToeBoard"
 export * from "./LocalGame"
+export * from "./MenuDropdown";

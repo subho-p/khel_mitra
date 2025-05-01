@@ -6,11 +6,15 @@ import { useTicTacToeStore } from "@/tic-tac-toe/lib/useTicTacToeStore";
 import { useTicTacToeGameStore } from "@/tic-tac-toe/lib/useTicTiaToeGameStore";
 
 export const TicTacToePage = () => {
-    const { reset } = useTicTacToeStore();
+    const { reset, playerType } = useTicTacToeStore();
 
     const { status, setStatus } = useTicTacToeGameStore();
 
     const startGame = () => {
+        if (playerType == "Local") {
+            setStatus("Playing");
+            return;
+        }
         setStatus("Waiting");
 
         setTimeout(() => {

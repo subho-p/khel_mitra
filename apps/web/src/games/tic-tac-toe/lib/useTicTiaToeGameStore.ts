@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { GameStatus } from "../../constant";
+import { GameStatus } from "@/games/constant";
 
 interface State {
     status: GameStatus;
