@@ -1,12 +1,9 @@
 import { create } from "zustand";
 import { GameStatus } from "@/games/constant";
 
-interface State {
-    status: GameStatus;
-}
+interface State {}
 
-interface TicTacToeGameStore extends State{
-    setStatus: (status: GameStatus) => void;
+interface TicTacToeGameStore extends State {
     reset: () => void;
 }
 
@@ -16,10 +13,6 @@ const initialState: State = {
 
 export const useTicTacToeGameStore = create<TicTacToeGameStore>((set, get) => ({
     ...initialState,
-
-    setStatus: (status) => {
-        set({ status });
-    },
 
     reset: () => {
         set({ ...initialState });
