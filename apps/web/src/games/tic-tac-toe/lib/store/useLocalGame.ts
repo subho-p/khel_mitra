@@ -1,7 +1,7 @@
 import { create } from "zustand";
 
-import { TTicTacToeSymbol } from "./types";
-import { checkWinningCombination } from "./utils";
+import { TTicTacToeSymbol } from "../types";
+import { checkWinningCombination } from "../utils";
 
 interface State {
     board: TTicTacToeSymbol[];
