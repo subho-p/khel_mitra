@@ -3,6 +3,7 @@
     "private": true,
     "scripts": {
         "dev": "turbo dev",
+        "dev-apps": "turbo dev --filter=./apps/*",
         "build": "turbo build",
         "predev:db": "cd ./packages/db && pnpm db:dev:up",
         "dev:db": "turbo dev",

@@ -1,16 +1,9 @@
 "use client";
 
-import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { Menu } from "lucide-react";
 import React from "react";
+import { MenuDropdown } from "@/tic-tac-toe/components";
 import { LocalGame, TicTacToeBoard } from "@/tic-tac-toe/components";
 import { useTicTacToeStore } from "@/tic-tac-toe/lib/useTicTacToeStore";
-import { useTicTacToeGameStore } from "@/tic-tac-toe/lib/useTicTiaToeGameStore";
 
 export const GamePage = () => {
     const { playerType } = useTicTacToeStore();
@@ -34,22 +27,3 @@ export const GamePage = () => {
     );
 };
 
-const MenuDropdown = () => {
-    return (
-        <DropdownMenu>
-            <DropdownMenuTrigger>
-                <Menu className="size-6" />
-            </DropdownMenuTrigger>
-            <DropdownMenuContent sideOffset={6} className="ml-24">
-                <DropdownMenuItem
-                    onClick={() => {
-                        useTicTacToeStore.getState().reset();
-                        useTicTacToeGameStore.getState().reset();
-                    }}
-                >
-                    Exit
-                </DropdownMenuItem>
-            </DropdownMenuContent>
-        </DropdownMenu>
-    );
-};

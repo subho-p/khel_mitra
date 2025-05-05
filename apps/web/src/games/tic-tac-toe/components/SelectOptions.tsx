@@ -1,7 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { PlayerType, OnlinePlayerType } from "@/games/constant";
+import { PlayerType, OnlinePlayerType, BETTING_TOKENS } from "@/games/constant";
 import { useTicTacToeStore } from "@/tic-tac-toe/lib/useTicTacToeStore";
 
 export const SelectOptions = ({ startGame }: { startGame: () => void }) => {
@@ -9,9 +9,11 @@ export const SelectOptions = ({ startGame }: { startGame: () => void }) => {
         playerType,
         onlinePlayerType,
         roomMemberType,
+        bettingTokens,
         setPlayerType,
         setOnlinePlayerType,
         setRoomMemberType,
+        setBettingTokens,
         isCanStart,
     } = useTicTacToeStore();
 
@@ -73,6 +75,25 @@ export const SelectOptions = ({ startGame }: { startGame: () => void }) => {
                         </div>
                     </div>
                 )}
+
+                {/* Betting Token options */}
+                {playerType == "Online" &&
+                    (onlinePlayerType == "Random" || roomMemberType === "Admin") && (
+                        <div className="flex w-full justify-between items-center">
+                            <h5 className="">Betting Tokens</h5>
+                            <div className="flex items-center justify-between gap-4">
+                                {BETTING_TOKENS.map((token) => (
+                                    <Button
+                                        key={token}
+                                        variant={token === bettingTokens ? "default" : "secondary"}
+                                        onClick={() => setBettingTokens(token)}
+                                    >
+                                        {token}
+                                    </Button>
+                                ))}
+                            </div>
+                        </div>
+                    )}
 
                 <Button onClick={startGame} disabled={isCanStart()}>
                     Start Game
